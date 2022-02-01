@@ -12,28 +12,43 @@ contexts:
     - include: uvm_fatal_record
     - include: uvm_trigger_time
     - include: fatal
+    - include: integer_number
+    - include: path
+    - include: discard_information
     
-    uvm_log_record:
-      - match: \bUVM_INFO\b
-        scope: entity.name.info
-    uvm_error_record:
-      - match: \bUVM_ERROR\b
-        scope: invalid
-    uvm_warn_record:
-      - match: \bUVM_WARNING\b
-        scope: entity.name.warn
-    uvm_fatal_record:
-      - match: \bUVM_FATAL\b
-        scope: invalid
-    uvm_trigger_time:
-      - match: '@'
-        scope: constant.numeric
-        push: number
-    number: 
-      - meta_scope: constant.numeric
-      - match: \b[0-9]+\s
-        pop: true
-        
-    fatal: 
-      - match: \bfatal\b
-        scope: invalid
+  uvm_log_record:
+    - match: \bUVM_INFO\b
+      scope: entity.name.info
+  uvm_error_record:
+    - match: \bUVM_ERROR\b
+      scope: invalid
+  uvm_warn_record:
+    - match: \bUVM_WARNING\b
+      scope: entity.name.warn
+  uvm_fatal_record:
+    - match: \bUVM_FATAL\b
+      scope: invalid
+  uvm_trigger_time:
+    - match: '@'
+      scope: keyword.control
+      push: time_number
+  time_number: 
+    - meta_scope: keyword.control
+    - match: \b[0-9]+\s
+      pop: true
+    - match: \b[0-9]+:\s
+      pop: true
+  integer_number:
+    - match: \s[0-9]*'[dbh][0-9]+\s
+    - scope: constant.numeric.integer.hexadecimal
+ 
+  fatal: 
+    - match: \bfatal\b
+      scope: invalid
+      
+  path:
+    - match: \b\/([A-z0-9-_+]+\/)*([A-z0-9]+\.(sv|svh|svi))$\b
+      scope: comment
+  discard_information:
+    - match: \b^[^/].*\b
+      scope: comment
