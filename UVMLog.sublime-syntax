@@ -1,0 +1,39 @@
+%YAML 1.2
+---
+name: UVMLog
+file_extension: [log,uvmlog]
+scope: text.uvmlog
+
+contexts:
+  main: 
+    - include: uvm_log_record
+    - include: uvm_warn_record
+    - include: uvm_error_record
+    - include: uvm_fatal_record
+    - include: uvm_trigger_time
+    - include: fatal
+    
+    uvm_log_record:
+      - match: \bUVM_INFO\b
+        scope: entity.name.info
+    uvm_error_record:
+      - match: \bUVM_ERROR\b
+        scope: invalid
+    uvm_warn_record:
+      - match: \bUVM_WARNING\b
+        scope: entity.name.warn
+    uvm_fatal_record:
+      - match: \bUVM_FATAL\b
+        scope: invalid
+    uvm_trigger_time:
+      - match: '@'
+        scope: constant.numeric
+        push: number
+    number: 
+      - meta_scope: constant.numeric
+      - match: \b[0-9]+\s
+        pop: true
+        
+    fatal: 
+      - match: \bfatal\b
+        scope: invalid
