@@ -1,4 +1,4 @@
-UVM log plugin for Sublime text
+UVM log plugin for Sublime text(Currently only support Highlighting)
 
 # Feature
 
